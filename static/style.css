@@ -1,0 +1,62 @@
+:root {
+  --bg: #0d0f14; --surface: #161820; --surface2: #1e2030; --border: #252736;
+  --text: #e2e8f0; --muted: #556070; --accent: #6366f1;
+  --green: #22c55e; --yellow: #eab308; --red: #ef4444;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 1.5; }
+.wrap { max-width: 1200px; margin: 0 auto; }
+
+/* ── header ── */
+header { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+header h1 { font-size: 17px; font-weight: 700; color: var(--accent); }
+header span { color: var(--muted); font-size: 12px; }
+
+/* ── controls ── */
+.controls { padding: 10px 24px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid var(--border); }
+.filter-btn { padding: 4px 12px; border-radius: 16px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; font-size: 12px; transition: all .12s; white-space: nowrap; }
+.filter-btn:hover, .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.threshold { display: flex; align-items: center; gap: 6px; margin-left: auto; color: var(--muted); font-size: 12px; flex-shrink: 0; }
+.threshold input { width: 52px; padding: 3px 6px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 12px; }
+.stats { padding: 6px 24px; color: var(--muted); font-size: 11px; border-bottom: 1px solid var(--border); }
+
+/* ── card grid ── */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; background: var(--border); }
+
+/* ── card ── */
+.card { background: var(--surface); display: flex; flex-direction: column; cursor: default; transition: background .12s; }
+.card:hover { background: var(--surface2); }
+.card.selected { background: var(--surface2); outline: 2px solid var(--accent); outline-offset: -2px; position: relative; z-index: 1; }
+.card.read { opacity: 0.38; }
+.card.read .card-thumb img { filter: grayscale(1); }
+
+.card-thumb { width: 100%; aspect-ratio: 16/9; overflow: hidden; background: var(--surface2); flex-shrink: 0; }
+.card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .2s; }
+.card:hover .card-thumb img { transform: scale(1.03); }
+.card-no-thumb { width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, var(--surface2), var(--border)); display: flex; align-items: center; justify-content: center; }
+.card-no-thumb .score-big { font-size: 28px; font-weight: 800; }
+
+.card-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+
+.card-title { font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--text); }
+.card-title a { color: inherit; text-decoration: none; }
+.card-title a:hover { color: var(--accent); }
+.card-title-orig { font-size: 10px; color: var(--muted); margin-top: 2px; line-height: 1.3; }
+
+.card-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.score-badge { font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 10px; flex-shrink: 0; }
+.score-high { background: rgba(34,197,94,.18); color: var(--green); }
+.score-mid  { background: rgba(234,179,8,.18);  color: var(--yellow); }
+.score-low  { background: rgba(239,68,68,.12);  color: var(--red); }
+.score-none { background: rgba(100,116,139,.12); color: var(--muted); }
+.source-tag { font-size: 10px; background: rgba(99,102,241,.15); color: var(--accent); padding: 1px 7px; border-radius: 10px; }
+.hn-score { font-size: 10px; color: var(--muted); }
+
+
+.hidden { display: none !important; }
+
+/* ── mark all read bar ── */
+.mark-all-bar { padding: 40px 24px; display: flex; justify-content: center; }
+.mark-all-btn { padding: 16px 56px; font-size: 16px; font-weight: 700; background: var(--accent); color: #fff; border: none; border-radius: 14px; cursor: pointer; letter-spacing: .03em; transition: opacity .12s, transform .1s; }
+.mark-all-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.mark-all-btn:active { transform: translateY(0); }

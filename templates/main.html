@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KijiYomu - {{.Date}}</title>
+<style>{{.CSS}}</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>⚡ KijiYomu</h1>
+  <span>{{.Date}} — {{len .Articles}} 件</span>
+</header>
+<div class="controls">
+  <button class="filter-btn active" onclick="filterSource('all')">All</button>
+  {{range .Sources}}<button class="filter-btn" onclick="filterSource('{{.}}')">{{.}}</button>{{end}}
+  <button id="read-toggle" class="filter-btn" onclick="toggleShowRead()">既読も表示</button>
+  <div class="threshold">
+    スコア: <input type="number" id="threshold" value="0" min="0" max="100" onchange="applyThreshold()">+
+  </div>
+</div>
+<div class="stats">表示中: <span id="visible-count">{{len .Articles}}</span> 件</div>
+<div class="grid" id="articles">
+{{range .Articles}}
+<div class="card" data-source="{{.Source}}" data-score="{{.AIScore}}" data-url="{{.URL}}">
+  {{if .OGImage}}
+  <div class="card-thumb"><img src="{{.OGImage}}" alt="" loading="lazy" onerror="this.closest('.card-thumb').replaceWith(Object.assign(document.createElement('div'),{className:'card-no-thumb',innerHTML:'<span class=\'score-big {{scoreClass .AIScore}}\'>{{if gt .AIScore 0}}{{.AIScore}}{{else}}?{{end}}</span>'}))"></div>
+  {{else}}
+  <div class="card-no-thumb"><span class="score-big {{scoreClass .AIScore}}">{{if gt .AIScore 0}}{{.AIScore}}{{else}}?{{end}}</span></div>
+  {{end}}
+  <div class="card-body">
+    <div class="card-title"><a href="{{.URL}}" target="_blank" rel="noopener">{{if .TitleJA}}{{.TitleJA}}{{else}}{{.Title}}{{end}}</a></div>
+    {{if .TitleJA}}<div class="card-title-orig">{{.Title}}</div>{{end}}
+    <div class="card-meta">
+      {{if gt .AIScore 0}}<span class="score-badge {{scoreClass .AIScore}}">{{.AIScore}}</span>{{end}}
+      <span class="source-tag">{{.Source}}</span>
+      {{if gt .Score 0}}<span class="hn-score">▲{{.Score}}</span>{{end}}
+    </div>
+  </div>
+</div>
+{{end}}
+</div>
+<div id="mark-all-bar" class="mark-all-bar">
+  <button class="mark-all-btn" onclick="markAllAsRead()">すべて既読にする</button>
+</div>
+</div>
+<script>{{.JS}}</script>
+</body>
+</html>
