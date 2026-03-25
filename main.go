@@ -196,7 +196,7 @@ func fetchRSS(rawURL, source string) []Article {
 		log.Printf("[WARN] %s: %v", source, err)
 		return nil
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 	body, _ := io.ReadAll(resp.Body)
 
 	var feed RSSFeed
@@ -225,7 +225,7 @@ func fetchAtom(rawURL, source string) []Article {
 		log.Printf("[WARN] %s: %v", source, err)
 		return nil
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 	body, _ := io.ReadAll(resp.Body)
 
 	var feed AtomFeed
@@ -250,9 +250,12 @@ func fetchHN(limit int) []Article {
 		log.Printf("[WARN] HN topstories: %v", err)
 		return nil
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 	var ids []int
-	json.NewDecoder(resp.Body).Decode(&ids)
+	if err := json.NewDecoder(resp.Body).Decode(&ids); err != nil {
+		log.Printf("[WARN] HN decode ids: %v", err)
+		return nil
+	}
 	if len(ids) > limit {
 		ids = ids[:limit]
 	}
@@ -272,9 +275,11 @@ func fetchHN(limit int) []Article {
 			if err != nil {
 				return
 			}
-			defer r.Body.Close()
+			defer func() { _ = r.Body.Close() }()
 			var story HNStory
-			json.NewDecoder(r.Body).Decode(&story)
+			if err := json.NewDecoder(r.Body).Decode(&story); err != nil {
+				return
+			}
 			if story.URL == "" {
 				story.URL = fmt.Sprintf("https://news.ycombinator.com/item?id=%d", story.ID)
 			}
@@ -799,7 +804,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("create output: %v", err)
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 	if err := tmpl.Execute(f, data); err != nil {
 		log.Fatalf("render template: %v", err)
 	}
