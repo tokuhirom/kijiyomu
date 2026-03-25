@@ -307,7 +307,7 @@ func fetchRDF(rawURL, source string) []Article {
 		log.Printf("[WARN] %s: %v", source, err)
 		return nil
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 	body, _ := io.ReadAll(resp.Body)
 
 	var feed RDFFeed
@@ -340,7 +340,7 @@ func fetchRedditRSS(sub string) []Article {
 		log.Printf("[WARN] Reddit r/%s: %v", sub, err)
 		return nil
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 	body, _ := io.ReadAll(resp.Body)
 
 	var feed AtomFeed
@@ -447,7 +447,7 @@ func fetchOGImage(rawURL string) string {
 	if err != nil {
 		return ""
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 	body, _ := io.ReadAll(io.LimitReader(resp.Body, 64*1024))
 	lower := strings.ToLower(string(body))
 
