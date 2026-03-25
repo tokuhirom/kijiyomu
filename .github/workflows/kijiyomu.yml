@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -62,7 +62,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
 
     environment:
       name: github-pages
