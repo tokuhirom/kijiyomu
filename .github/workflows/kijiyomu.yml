@@ -1,0 +1,74 @@
+name: KijiYomu
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true  # go module cache
+
+      # キャッシュリストア: key が存在しなくても restore-keys で最新を取得
+      - name: Restore KijiYomu cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .kijiyomu_cache.json
+          key: kijiyomu-cache-${{ github.run_id }}
+          restore-keys: |
+            kijiyomu-cache-
+
+      - name: Run KijiYomu
+        env:
+          AI_API_BASE: ${{ secrets.AI_API_BASE }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          AI_MODEL: ${{ secrets.AI_MODEL }}
+        run: go run main.go
+
+      # 常に最新状態で保存（key に run_id を含めることで毎回新規保存）
+      - name: Save KijiYomu cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .kijiyomu_cache.json
+          key: kijiyomu-cache-${{ github.run_id }}
+
+      - name: Prepare Pages artifact
+        run: |
+          mkdir -p _site
+          cp kijiyomu.html _site/index.html
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

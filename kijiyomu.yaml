@@ -1,0 +1,61 @@
+profile: |
+  - 言語/技術: Rust, Go, TypeScript, Python
+  - 分野: システムプログラミング, LLM/AIエージェント, ゲーム開発(ブラウザゲーム/Phaser3), 日本語IME, WebAssembly, クラウドインフラ(Kubernetes, docker, etc.), データベース内部構造, コンパイラ/言語処理系
+  - 製品: さくらインターネット, OpenAPI, Wails, ogen
+  - 趣味: Minecraft, roguelike, ピクセルアート, 演芸
+  - 関心低め: スポーツ
+
+feeds:
+  - name: Hacker News
+    type: hn
+    limit: 50
+
+  - name: はてなブックマーク
+    type: rdf
+    url: https://b.hatena.ne.jp/hotentry/it.rss
+
+  - name: Zenn
+    type: rss
+    url: https://zenn.dev/feed
+
+  - name: Qiita
+    type: atom
+    url: https://qiita.com/popular-items/feed
+
+  - name: Classmethod
+    type: rss
+    url: https://dev.classmethod.jp/feed/
+
+  - name: Lobsters
+    type: rss
+    url: https://lobste.rs/rss
+
+  - name: Gizmodo JP
+    type: rss
+    url: https://www.gizmodo.jp/index.xml
+
+  - name: ROOMIE
+    type: rss
+    url: https://www.roomie.jp/feed/
+
+  - name: Reddit r/rust
+    type: reddit
+    subreddit: rust
+
+  - name: Reddit r/golang
+    type: reddit
+    subreddit: golang
+
+  - name: Reddit r/programming
+    type: reddit
+    subreddit: programming
+
+  - name: Google さくらインターネット
+    type: rss
+    url: 'https://news.google.com/rss/topics/CAAqJQgKIh9DQkFTRVFvTEwyY3ZNVEl4WW5jeE1HUVNBbXBoS0FBUAE?ceid=JP:ja&oc=3&hl=ja&gl=JP'
+
+  - name: 日本 - 最新 - Google ニュース
+    type: rss
+    url: 'https://news.google.com/rss/topics/CAAqIQgKIhtDQkFTRGdvSUwyMHZNRE5mTTJRU0FtcGhLQUFQAQ?hl=ja&gl=JP&ceid=JP:ja'
+
+
