@@ -34,8 +34,6 @@ dotenvx run -- ./kijiyomu
 # スコア 40 以上のみ表示
 dotenvx run -- ./kijiyomu --min-score 40
 
-# HN の取得件数を増やす
-dotenvx run -- ./kijiyomu --hn-limit 100
 ```
 
 ## オプション一覧
@@ -47,7 +45,6 @@ dotenvx run -- ./kijiyomu --hn-limit 100
 | `--model` | `AI_MODEL` | `gpt-4o-mini` | モデル名 |
 | `--out` | | `kijiyomu.html` | 出力 HTML ファイル名 |
 | `--min-score` | | `0` | AI スコアの下限（0=フィルタなし） |
-| `--hn-limit` | | `50` | HN から取得するストーリー数（config で未指定の場合） |
 | `--cache-file` | | `.kijiyomu_cache.json` | キャッシュファイルのパス |
 | `--config` | | `kijiyomu.yaml` | フィードソース設定ファイル |
 
@@ -59,7 +56,7 @@ dotenvx run -- ./kijiyomu --hn-limit 100
 feeds:
   - name: Hacker News
     type: hn
-    limit: 50          # 省略すると --hn-limit の値を使用
+    limit: 50          # 省略すると 50 が使用される
 
   - name: はてなブックマーク
     type: rdf
