@@ -39,7 +39,6 @@ var CLI struct {
 	Model     string `help:"Model name" env:"AI_MODEL" default:"gpt-4o-mini"`
 	Out       string `help:"Output HTML file" default:"kijiyomu.html"`
 	MinScore  int    `help:"Minimum AI score to include (0=include all)" default:"0"`
-	HNLimit   int    `help:"Number of HN stories to fetch (used when limit is not set in config)" default:"50"`
 	CacheFile string `help:"Cache file for AI scores" default:".kijiyomu_cache.json"`
 	Config    string `help:"Feed config YAML file" default:"kijiyomu.yaml"`
 }
@@ -51,7 +50,7 @@ type FeedConfig struct {
 	Type      string `yaml:"type"`      // hn, rss, atom, rdf, reddit
 	URL       string `yaml:"url"`
 	Subreddit string `yaml:"subreddit"` // for type: reddit
-	Limit     int    `yaml:"limit"`     // for type: hn (overrides --hn-limit)
+	Limit     int    `yaml:"limit"`     // for type: hn (default: 50)
 }
 
 type Config struct {
@@ -696,7 +695,7 @@ func main() {
 		for _, f := range feedCfg.Feeds {
 			limit := f.Limit
 			if limit == 0 {
-				limit = CLI.HNLimit
+				limit = 50
 			}
 			var fn func() []Article
 			switch f.Type {
